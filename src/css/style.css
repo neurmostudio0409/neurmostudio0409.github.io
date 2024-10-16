@@ -84,7 +84,7 @@
 
 /* 當按鈕被激活時的效果 */
 #switch-button.active {
-  background-color: #4CAF50; /* 激活狀態的背景顏色 */
+  background-color: rgba(0, 0, 255, 0.6); /* 激活狀態的背景顏色 */
   color: white; /* 激活狀態的文字顏色 */
   transform: scale(1.05); /* 激活狀態的放大效果 */
 }
