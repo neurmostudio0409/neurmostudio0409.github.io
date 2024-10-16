@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>NeurWebXR_AR</title>
+    <link rel="stylesheet" type="text/css" href="./src/css/style.css">
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-look-at-component@1.0.0/dist/aframe-look-at-component.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-physics-system/v2.1.0/dist/aframe-physics-system.min.js"></script>
+    <script src="https://unpkg.com/aframe-arkit@0.2.0/dist/aframe-arkit.min.js"></script>
+  </head>
+
+  <body style="margin: 0; overflow: hidden;">
+    <div id="coordinates" style="position: absolute; top: 10px; left: 10px; color: white; font-size: 16px;">
+      Coordinates: Loading...
+    </div>
+    
+    <div id="camera-coordinates" style="position: absolute; top: 60px; left: 10px; color: white; font-size: 16px;">
+      Camera Position: Loading...
+    </div>
+  
+    <script src="./src/js/main.js"></script>
+  
+    <a-scene vr-mode-ui="enabled: false" embedded arjs="sourceType: webcam; debugUIEnabled: false;" arkit="detectionMode: plane;">
+      <a-camera gps-camera='simulateLatitude: 22.738301; simulateLongitude: 120.316253' rotation-reader> </a-camera>
+      <a-assets>
+        <a-asset-item id="Confetti" src="assets/models/glb/Confetti_Only.glb"></a-asset-item>
+        <a-asset-item id="Weapon" src="assets/models/glb/Weapon_only.glb"></a-asset-item>
+        <a-asset-item id="Animals" src="assets/models/glb/Animals_only.glb"></a-asset-item>
+      </a-assets>
+        <a-text 
+          value="This content will always face you." 
+          look-at="[gps-camera]" 
+          scale="20 20 20"
+          gps-entity-place="latitude: 22.573546249552514; longitude: 120.3246081992984;">
+        </a-text>
+        <a-entity 
+          look-at="[gps-camera]"
+          position="0 0 0"
+          animation-mixer="loop: repeat" 
+          gltf-model="#Confetti" 
+          scale="1 1 1"
+          gps-entity-place="latitude: 22.572110149552514; longitude: 120.3253901992984;">
+        </a-entity>
+        <a-entity 
+          position="0 0 0"
+          animation-mixer="loop: repeat" 
+          gltf-model="#Weapon" 
+          scale="1 1 1"
+          gps-entity-place="latitude: 22.738301; longitude: 120.316253;">
+        </a-entity>
+        <a-entity 
+          position="0 0 0"
+          animation-mixer="loop: repeat" 
+          gltf-model="#Animals" 
+          scale="1 1 1"
+          gps-entity-place="latitude: 22.838301; longitude: 120.416253;">
+        </a-entity>
+      </a-scene>
+  </body>
+</html>

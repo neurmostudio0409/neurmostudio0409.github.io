@@ -1,0 +1,99 @@
+#height-controls {
+  position: absolute;
+  bottom: 20px; /* 距離畫面底部 */
+  right: 20px; /* 距離畫面右側 */
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* 按鈕之間的間距 */
+}
+
+.height-button {
+  width: 50px;
+  height: 50px;
+  background-color: rgba(0, 0, 255, 0.6); /* 按鈕背景色 */
+  color: white;
+  font-size: 24px;
+  border-radius: 50%; /* 圓形按鈕 */
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.height-button:hover {
+  background-color: rgba(0, 0, 255, 0.8); /* 懸停效果 */
+}
+
+
+#coordinates, #camera-coordinates {
+  position: absolute;
+  left: 10px;
+  color: white;
+  font-size: 16px;
+  background-color: rgba(0, 0, 255, 0.3); /* 半透明藍底 */
+  padding: 10px;
+  border-radius: 10px;
+  line-height: 1.5em; /* 行間距 */
+  transition: transform 0.5s ease; /* 使方塊移動時有動畫效果 */
+}
+
+#camera-coordinates {
+  top: 40px; /* 與 #coordinates 的位置有間隔 */
+}
+
+#coordinates.minimized {
+  transform: translateX(-100%); /* 收到畫面邊緣 */
+}
+
+#camera-coordinates.minimized {
+  transform: translateX(-100%); /* 收到画面边缘 */
+  opacity: 0; /* 使其透明以实现隐藏效果 */
+}
+
+#toggle-button {
+  position: absolute;
+  top: 110px; /* 根據需要調整按鈕的位置 */
+  left: 10px;
+  background-color: rgba(0, 0, 255, 0.6); /* 按鈕的背景色 */
+  color: white;
+  font-size: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: top 0.5s ease; /* 箭頭位置移動的動畫效果 */
+}
+
+#toggle-button:hover {
+  background-color: rgba(0, 0, 255, 0.8); /* 懸停時的效果 */
+}
+
+/* 調整切換按鈕的位置和樣式 */
+#switch-button {
+  position: fixed; /* 固定位置 */
+  bottom: 20px; /* 距離底部20像素 */
+  left: 20px; /* 距離左側20像素 */
+  padding: 10px 15px; /* 按鈕內部邊距 */
+  background-color: #008CBA; /* 初始背景顏色 */
+  color: white; /* 按鈕文字顏色 */
+  border: none; /* 無邊框 */
+  border-radius: 5px; /* 邊角圓弧 */
+  cursor: pointer; /* 指標樣式 */
+  transition: background-color 0.3s, transform 0.2s; /* 按鈕變化時的動畫 */
+}
+
+/* 當按鈕被激活時的效果 */
+#switch-button.active {
+  background-color: #4CAF50; /* 激活狀態的背景顏色 */
+  color: white; /* 激活狀態的文字顏色 */
+  transform: scale(1.05); /* 激活狀態的放大效果 */
+}
+
+/* 當按鈕懸停時的效果 */
+#switch-button:hover {
+  background-color: rgba(0, 0, 255, 0.8); /* 懸停時的背景顏色 */
+}
+
+.a-enter-vr {
+  display: none;
+}
