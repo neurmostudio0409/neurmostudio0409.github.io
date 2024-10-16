@@ -74,7 +74,7 @@
   bottom: 20px; /* 距離底部20像素 */
   left: 20px; /* 距離左側20像素 */
   padding: 10px 15px; /* 按鈕內部邊距 */
-  background-color: #008CBA; /* 初始背景顏色 */
+  background-color: rgba(0, 0, 255, 0.6); /* 初始背景顏色 */
   color: white; /* 按鈕文字顏色 */
   border: none; /* 無邊框 */
   border-radius: 5px; /* 邊角圓弧 */
