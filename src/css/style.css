@@ -94,6 +94,38 @@
   background-color: rgba(0, 0, 255, 0.8); /* 懸停時的背景顏色 */
 }
 
+#fade-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 9999; /* 確保在最上層 */
+  transition: opacity 1s ease-in-out, visibility 0s linear 1s; /* 漸入漸出效果 */
+}
+
+.fade-in {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 1s ease-in-out;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 1s ease-in-out, visibility 0s linear 1s;
+}
+
+/* 調整 coordinates 和 camera-coordinates 的 z-index */
+#coordinates, #camera-coordinates {
+  z-index: 1000; /* 設定足夠高的值，避免被模型覆蓋 */
+}
+
 .a-enter-vr {
   display: none;
 }
+
+
+/* 其他必要的樣式 */
