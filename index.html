@@ -13,11 +13,11 @@
   </head>
 
   <body style="margin: 0; overflow: hidden;">
-    <div id="coordinates">
+    <div id="coordinates" style="position: absolute; top: 10px; left: 10px; color: white; font-size: 16px;">
       Coordinates: Loading...
     </div>
     
-    <div id="camera-coordinates">
+    <div id="camera-coordinates" style="position: absolute; top: 60px; left: 10px; color: white; font-size: 16px;">
       Camera Position: Loading...
     </div>
   
@@ -30,14 +30,6 @@
         <a-asset-item id="Weapon" src="assets/models/glb/Weapon_only.glb"></a-asset-item>
         <a-asset-item id="Animals" src="assets/models/glb/Animals_only.glb"></a-asset-item>
       </a-assets>
-        <a-entity>
-          <a-entity position="5 0 0"></a-entity>
-          <a-animation attribute="rotation"
-                       dur="10000"
-                       fill="forwards"
-                       to="0 360 0"
-                       repeat="indefinite"></a-animation>
-        </a-entity>
         <a-text 
           value="This content will always face you." 
           look-at="[gps-camera]" 
