@@ -46,22 +46,9 @@ window.onload = function() {
     gpsCamera.setAttribute('position', position);
   });
 
- // 增加淡入淡出的功能
-const fadeScreen = document.getElementById('fade-screen');
-
-// 淡出效果
-function fadeOut() {
-  fadeScreen.style.opacity = 1; // 漸出至全黑
-  setTimeout(() => {
-    fadeScreen.style.opacity = 0; // 1 秒後漸入回正常畫面
-  }, 1000);
-}
-
-// 修改 switchButton 的功能，加入淡入淡出動畫
-switchButton.addEventListener('click', () => {
-  fadeOut(); // 點擊時觸發淡入淡出效果
-
-  setTimeout(() => {
+  // 切換模擬位置
+  let isFirstLocation = true;
+  switchButton.addEventListener('click', () => {
     if (isFirstLocation) {
       gpsCamera.setAttribute('gps-camera', 'simulateLatitude: 22.838301; simulateLongitude: 120.416253');
       isFirstLocation = false; // 切換到第二個位置
@@ -69,11 +56,7 @@ switchButton.addEventListener('click', () => {
       gpsCamera.setAttribute('gps-camera', 'simulateLatitude: 22.738301; simulateLongitude: 120.316253');
       isFirstLocation = true; // 切換回第一個位置
     }
-  }, 1000); // 等待淡出動畫結束後切換位置
-});
-
-
-  
+  });
 
   toggleButton.addEventListener('click', () => {
     minimized = !minimized;

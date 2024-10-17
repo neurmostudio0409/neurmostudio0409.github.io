@@ -94,20 +94,6 @@
   background-color: rgba(0, 0, 255, 0.8); /* 懸停時的背景顏色 */
 }
 
-#fade-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: black;
-  opacity: 0;
-  z-index: 9999; /* 設置在最前層 */
-  transition: opacity 1s ease-in-out; /* 漸出漸入動畫 */
-  pointer-events: none; /* 防止影響其他元素的互動 */
-}
-
 .a-enter-vr {
   display: none;
 }
-
