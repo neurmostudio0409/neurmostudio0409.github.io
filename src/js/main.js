@@ -32,12 +32,6 @@ window.onload = function() {
   switchButton.innerHTML = '切換位置'; // 按鈕文字
   document.body.appendChild(switchButton);
 
-  // 建立黑色全畫面漸出漸入效果
-  const fadeOverlay = document.createElement('div');
-  fadeOverlay.id = 'fade-overlay';
-  document.body.appendChild(fadeOverlay);
-
-  // 點擊上升按鈕
   buttonUp.addEventListener('click', (event) => {
     event.preventDefault();  // 阻止預設行為
     var position = gpsCamera.getAttribute('position');
@@ -45,7 +39,6 @@ window.onload = function() {
     gpsCamera.setAttribute('position', position);
   });
 
-  // 點擊下降按鈕
   buttonDown.addEventListener('click', (event) => {
     event.preventDefault();  // 阻止預設行為
     var position = gpsCamera.getAttribute('position');
@@ -53,32 +46,34 @@ window.onload = function() {
     gpsCamera.setAttribute('position', position);
   });
 
-  // 切換模擬位置，並加入漸出漸入效果
-  let isFirstLocation = true;
-  switchButton.addEventListener('click', () => {
-    // 漸入
-    fadeOverlay.classList.add('fade-in');
-    
-    setTimeout(() => {
-      // 切換 GPS 位置
-      if (isFirstLocation) {
-        gpsCamera.setAttribute('gps-camera', 'simulateLatitude: 22.838301; simulateLongitude: 120.416253');
-        isFirstLocation = false;
-      } else {
-        gpsCamera.setAttribute('gps-camera', 'simulateLatitude: 22.738301; simulateLongitude: 120.316253');
-        isFirstLocation = true;
-      }
+ // 增加淡入淡出的功能
+const fadeScreen = document.getElementById('fade-screen');
 
-      // 漸出
-      fadeOverlay.classList.remove('fade-in');
-      fadeOverlay.classList.add('fade-out');
-      
-      // 移除漸出效果後將 visibility 隱藏
-      setTimeout(() => {
-        fadeOverlay.classList.remove('fade-out');
-      }, 1000); // 1 秒後移除
-    }, 1000); // 1 秒漸入動畫後進行位置切換
-  });
+// 淡出效果
+function fadeOut() {
+  fadeScreen.style.opacity = 1; // 漸出至全黑
+  setTimeout(() => {
+    fadeScreen.style.opacity = 0; // 1 秒後漸入回正常畫面
+  }, 1000);
+}
+
+// 修改 switchButton 的功能，加入淡入淡出動畫
+switchButton.addEventListener('click', () => {
+  fadeOut(); // 點擊時觸發淡入淡出效果
+
+  setTimeout(() => {
+    if (isFirstLocation) {
+      gpsCamera.setAttribute('gps-camera', 'simulateLatitude: 22.838301; simulateLongitude: 120.416253');
+      isFirstLocation = false; // 切換到第二個位置
+    } else {
+      gpsCamera.setAttribute('gps-camera', 'simulateLatitude: 22.738301; simulateLongitude: 120.316253');
+      isFirstLocation = true; // 切換回第一個位置
+    }
+  }, 1000); // 等待淡出動畫結束後切換位置
+});
+
+
+  
 
   toggleButton.addEventListener('click', () => {
     minimized = !minimized;
@@ -104,10 +99,12 @@ window.onload = function() {
       const longitude = position.coords.longitude;
       const altitude = position.coords.altitude;
 
+      // 如果初始座標為 null，則設置初始座標
       if (initialCoordinates === null) {
         initialCoordinates = { latitude, longitude, altitude };
         coordinatesDiv.innerHTML = `Initial Coordinates set: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}, Altitude: ${altitude ? altitude.toFixed(2) + ' meters' : 'Unavailable'}`;
       } else {
+        // 更新座標顯示
         coordinatesDiv.innerHTML = `Coordinates: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}, Altitude: ${altitude ? altitude.toFixed(2) + ' meters' : 'Unavailable'}`;
       }
     },
@@ -117,13 +114,63 @@ window.onload = function() {
     {
       enableHighAccuracy: true,
       maximumAge: 0,
-      timeout: 2700
+      timeout: 2700 // 將 timeout 設為更低的數值
     }
   );
+
+  let smoothAccX = 0;
+  let smoothAccY = 0;
+  let smoothAccZ = 0;
+
+  const smoothingFactor = 0.1; // 可以根據需要調整
+
+  window.addEventListener('devicemotion', function(event) {
+    const accX = event.accelerationIncludingGravity.x;
+    const accY = event.accelerationIncludingGravity.y;
+    const accZ = event.accelerationIncludingGravity.z;
+
+    // 平滑加速度數據
+    smoothAccX = smoothAccX * (1 - smoothingFactor) + accX * smoothingFactor;
+    smoothAccY = smoothAccY * (1 - smoothingFactor) + accY * smoothingFactor;
+    smoothAccZ = smoothAccZ * (1 - smoothingFactor) + accZ * smoothingFactor;
+
+    // 更新相機位置的邏輯...
+  });
+
+  const threshold = 0.05; // 根據需要調整閾值
+
+  window.addEventListener('devicemotion', function(event) {
+    const accX = event.accelerationIncludingGravity.x;
+    const accY = event.accelerationIncludingGravity.y;
+    const accZ = event.accelerationIncludingGravity.z;
+
+    // 檢查加速度是否超過閾值
+    if (Math.abs(accX) > threshold || Math.abs(accY) > threshold || Math.abs(accZ) > threshold) {
+      // 更新相機位置的邏輯...
+    }
+  });
+
+  gpsCamera.addEventListener('gps-camera-update-position', (event) => {
+    const { longitude, latitude, altitude } = event.detail.position;
+
+    if (latitude && longitude) {
+      coordinatesDiv.innerHTML = `Coordinates: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}, Altitude: ${altitude ? altitude.toFixed(2) + ' meters' : 'Unavailable'}`;
+    } else {
+      coordinatesDiv.innerHTML = 'No GPS position data available!';
+    }
+  });
+
+  gpsCamera.addEventListener('gps-camera-origin-coord-set', () => {
+    coordinatesDiv.innerHTML = 'GPS signal initialized. Waiting for first position...';
+  });
+
+  gpsCamera.addEventListener('gps-camera-error', (event) => {
+    coordinatesDiv.innerHTML = `Error: ${event.detail.error.message}`;
+  });
 
   // 定期更新相機位置
   setInterval(() => {
     const cameraPosition = gpsCamera.object3D.position;
     cameraCoordinatesDiv.innerHTML = `Camera Position: X: ${cameraPosition.x.toFixed(2)}, Y: ${cameraPosition.y.toFixed(2)}, Z: ${cameraPosition.z.toFixed(2)}`;
-  }, 100);
+  }, 100); // 每 100 毫秒更新一次
 };
