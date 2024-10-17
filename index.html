@@ -30,6 +30,14 @@
         <a-asset-item id="Weapon" src="assets/models/glb/Weapon_only.glb"></a-asset-item>
         <a-asset-item id="Animals" src="assets/models/glb/Animals_only.glb"></a-asset-item>
       </a-assets>
+        <a-entity>
+          <a-entity position="5 0 0"></a-entity>
+          <a-animation attribute="rotation"
+                       dur="10000"
+                       fill="forwards"
+                       to="0 360 0"
+                       repeat="indefinite"></a-animation>
+        </a-entity>
         <a-text 
           value="This content will always face you." 
           look-at="[gps-camera]" 
