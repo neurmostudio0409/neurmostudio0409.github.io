@@ -26,7 +26,7 @@
 }
 
 
-#coordinates, #camera-coordinates {
+#coordinates {
   position: absolute;
   left: 10px;
   color: white;
@@ -39,7 +39,16 @@
 }
 
 #camera-coordinates {
-  top: 40px; /* 與 #coordinates 的位置有間隔 */
+  position: absolute; 
+  top: 60px; 
+  left: 10px; 
+  color: white; 
+  font-size: 16px;
+  background-color: rgba(0, 0, 255, 0.3); /* 半透明藍底 */
+  padding: 10px;
+  border-radius: 10px;
+  line-height: 1.5em; /* 行間距 */
+  transition: transform 0.5s ease; /* 使方塊移動時有動畫效果 */
 }
 
 #coordinates.minimized {
