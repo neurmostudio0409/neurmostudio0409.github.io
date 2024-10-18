@@ -156,36 +156,4 @@ window.onload = function() {
     const cameraPosition = gpsCamera.object3D.position;
     cameraCoordinatesDiv.innerHTML = `Camera Position: X: ${cameraPosition.x.toFixed(2)}, Y: ${cameraPosition.y.toFixed(2)}, Z: ${cameraPosition.z.toFixed(2)}`;
   }, 100); // 每 100 毫秒更新一次
-
-  AFRAME.registerComponent('adjust-height-on-plane', {
-    init: function () {
-      var model = document.querySelector('#Weapon');
-      
-      this.el.addEventListener('gps-entity-place-update-entity', function () {
-        // 在 GPS 座標下顯示模型
-        model.setAttribute('visible', 'true');
-      });
-      
-      this.el.addEventListener('hit-test-start', function (event) {
-        // 透過平面偵測調整模型的高度
-        var intersection = event.detail.intersection;
-        if (intersection && model.getAttribute('visible')) {
-          var position = model.getAttribute('position');
-          position.y = intersection.point.y;  // 調整 y 軸高度至平面
-          model.setAttribute('position', position);
-        }
-      });
-    }
-  });
-
-  // 啟動組件來監聽事件
-  AFRAME.registerComponent('plane-detector', {
-    init: function () {
-      var sceneEl = this.el;
-      sceneEl.addEventListener('loaded', function () {
-        sceneEl.camera.el.setAttribute('adjust-height-on-plane', '');
-      });
-    }
-  });
 };
-

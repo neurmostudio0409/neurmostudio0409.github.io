@@ -23,20 +23,13 @@
   
     <script src="./src/js/main.js"></script>
   
-    <a-scene 
-      vr-mode-ui="enabled: false" 
-      embedded 
-      arjs="sourceType: webcam; debugUIEnabled: false; trackingMethod: gps;" 
-      arkit="detectionMode: plane;" 
-    >
-      <a-camera gps-camera='simulateLatitude: 22.738301; simulateLongitude: 120.316253' rotation-reader arkit-hit-test="target: #Weapon;"> </a-camera>
+    <a-scene vr-mode-ui="enabled: false" embedded arjs="sourceType: webcam; debugUIEnabled: false;" arkit="detectionMode: plane;">
+      <a-camera gps-camera='simulateLatitude: 22.738301; simulateLongitude: 120.316253' rotation-reader> </a-camera>
       <a-assets>
         <a-asset-item id="Confetti" src="assets/models/glb/Confetti_Only.glb"></a-asset-item>
         <a-asset-item id="Weapon" src="assets/models/glb/Weapon_only.glb"></a-asset-item>
         <a-asset-item id="Animals" src="assets/models/glb/Animals_only.glb"></a-asset-item>
       </a-assets>
-      <a-entity id="myEntity">
-      </a-entity>
         <a-text 
           value="This content will always face you." 
           look-at="[gps-camera]" 
