@@ -14,21 +14,17 @@
     </style>
   </head>
   <body>
-    <a-scene embedded arjs='sourceType: webcam; detectionMode: mono;'>
+    <a-scene embedded arjs='sourceType: webcam; detectionMode: mono_and_matrix;'>
       <a-entity camera></a-entity>
 
       <!-- 可放置的物體 -->
       <a-box id="placeable-box" position="0 0.5 0" color="#4CC3D2" visible="false"></a-box>
-
-      <!-- 用於平面檢測的平面 -->
-      <a-entity id="ground-plane" position="0 0 0" geometry="primitive: plane; width: 10; height: 10;" material="color: #7BC8A4; opacity: 0.5;"></a-entity>
 
       <a-entity id="marker" position="0 0 0" rotation="-90 0 0" visible="false"></a-entity>
     </a-scene>
 
     <script>
       const placeableBox = document.querySelector('#placeable-box');
-      const groundPlane = document.querySelector('#ground-plane');
 
       const onARReady = () => {
         placeableBox.setAttribute('visible', true); // 顯示可放置的物體
