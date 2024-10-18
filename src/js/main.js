@@ -124,7 +124,7 @@ window.onload = function() {
   ];
 
   switchButton.addEventListener('click', (event) => {
-    event.preventDefault();
+    event.preventDefault(); // 阻止預設行為
   // 根據當前索引切換位置
     const { latitude, longitude } = locations[currentLocationIndex];
     gpsCamera.setAttribute('gps-camera', `simulateLatitude: ${latitude}; simulateLongitude: ${longitude}`);
