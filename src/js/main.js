@@ -116,21 +116,22 @@ window.onload = function() {
   });
 
   // 切換模擬位置
-let currentLocationIndex = 0; // 初始位置索引為 0
-const locations = [
-  { latitude: 22.838301, longitude: 120.416253 }, // 第一個位置
-  { latitude: 22.738301, longitude: 120.316253 }, // 第二個位置
-  { latitude: 22.572110149552514, longitude: 120.3253901992984 } // 第三個位置
-];
+  let currentLocationIndex = 0; // 初始位置索引為 0
+  const locations = [
+    { latitude: 22.838301, longitude: 120.416253 }, // 第一個位置
+    { latitude: 22.738301, longitude: 120.316253 }, // 第二個位置
+    { latitude: 22.572110149552514, longitude: 120.3253901992984 } // 第三個位置
+  ];
 
-switchButton.addEventListener('click', () => {
+  switchButton.addEventListener('click', (event) => {
+    event.preventDefault();
   // 根據當前索引切換位置
-  const { latitude, longitude } = locations[currentLocationIndex];
-  gpsCamera.setAttribute('gps-camera', `simulateLatitude: ${latitude}; simulateLongitude: ${longitude}`);
+    const { latitude, longitude } = locations[currentLocationIndex];
+    gpsCamera.setAttribute('gps-camera', `simulateLatitude: ${latitude}; simulateLongitude: ${longitude}`);
 
   // 更新索引，並確保不會超過位置陣列的長度
-  currentLocationIndex = (currentLocationIndex + 1) % locations.length;
-});
+    currentLocationIndex = (currentLocationIndex + 1) % locations.length;
+  });
 
 
   toggleButton.addEventListener('click', () => {
