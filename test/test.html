@@ -1,45 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html lang="zh-TW">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR Plane Detection Example</title>
+    <title>AR Plane Detection with ARKit</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.js"></script>
     <style>
-      body {
-        margin: 0;
-        overflow: hidden;
-      }
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <a-scene embedded arjs='sourceType: webcam; detectionMode: mono_and_matrix;'>
-      <a-entity camera></a-entity>
+        <a-entity camera></a-entity>
 
-      <!-- 可放置的物體 -->
-      <a-box id="placeable-box" position="0 0.5 0" color="#4CC3D2" visible="false"></a-box>
+        <!-- 顯示的模型 -->
+        <a-box id="placeable-box" position="0 0.5 0" color="#4CC3D2" visible="false"></a-box>
 
-      <a-entity id="marker" position="0 0 0" rotation="-90 0 0" visible="false"></a-entity>
+        <a-entity id="marker" position="0 0 0" rotation="-90 0 0" visible="false"></a-entity>
     </a-scene>
 
     <script>
-      const placeableBox = document.querySelector('#placeable-box');
+        const placeableBox = document.querySelector('#placeable-box');
 
-      const onARReady = () => {
-        placeableBox.setAttribute('visible', true); // 顯示可放置的物體
-      };
+        const onARReady = () => {
+            placeableBox.setAttribute('visible', true); // 顯示可放置的物體
+        };
 
-      const onPlaneDetected = (event) => {
-        const intersection = event.detail.intersections[0];
-        if (intersection) {
-          const position = intersection.point;
-          placeableBox.setAttribute('position', `${position.x} ${position.y + 0.5} ${position.z}`);
-        }
-      };
+        const onPlaneDetected = (event) => {
+            const intersection = event.detail.intersections[0];
+            if (intersection) {
+                const position = intersection.point;
+                placeableBox.setAttribute('position', `${position.x} ${position.y + 0.5} ${position.z}`);
+            }
+        };
 
-      document.querySelector('a-scene').addEventListener('arjs-nonmarker-found', onARReady);
-      document.querySelector('a-scene').addEventListener('arjs-nonmarker-intersection', onPlaneDetected);
+        document.querySelector('a-scene').addEventListener('arjs-nonmarker-found', onARReady);
+        document.querySelector('a-scene').addEventListener('arjs-nonmarker-intersection', onPlaneDetected);
     </script>
-  </body>
+</body>
 </html>
