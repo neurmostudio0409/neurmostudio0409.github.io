@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <a-entity id="raycaster" raycaster="objects: .placeable"></a-entity>
+      <a-camera position="0 1.6 0" look-controls></a-camera>
+      <a-box class="placeable" position="0 0.5 -3" color="#4CC3D2"></a-box>
+    </a-scene>
+    <script>
+      const raycaster = document.querySelector('#raycaster');
+      raycaster.addEventListener('raycaster-intersection', function (evt) {
+        console.log('Intersection detected:', evt.detail.intersections);
+      });
+    </script>
+  </body>
+</html>
