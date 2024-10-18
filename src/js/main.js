@@ -1,3 +1,72 @@
+// TensorFlow Object Detection 基本設定
+let model = null;
+async function loadModel() {
+  const modelURL = 'https://tfhub.dev/tensorflow/ssd_mobilenet_v2/1/default/1'; // 使用 TensorFlow Hub 提供的預訓練模型
+  model = await tf.loadGraphModel(modelURL, {fromTFHub: true});
+  console.log('Model loaded');
+}
+
+// 建立相機畫布用於偵測
+const videoElement = document.createElement('video');
+videoElement.setAttribute('autoplay', '');
+videoElement.setAttribute('playsinline', '');
+videoElement.setAttribute('muted', '');
+videoElement.style.display = 'none';
+document.body.appendChild(videoElement);
+
+navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+  videoElement.srcObject = stream;
+});
+
+async function detectObjects() {
+  if (!model) return;
+
+  const videoWidth = videoElement.videoWidth;
+  const videoHeight = videoElement.videoHeight;
+
+  // 從相機擷取影像並進行偵測
+  const img = tf.browser.fromPixels(videoElement).expandDims(0);
+  const predictions = await model.executeAsync(img);
+
+  // 檢查是否有偵測到任何物件
+  const boxes = predictions[0].arraySync();
+  const scores = predictions[1].arraySync();
+  const threshold = 0.5; // 只顯示置信度大於 0.5 的結果
+
+  for (let i = 0; i < scores.length; i++) {
+    if (scores[i] > threshold) {
+      // 根據偵測結果進行 3D 模型的放置
+      const box = boxes[i];
+      const centerX = (box[1] + box[3]) / 2 * videoWidth;
+      const centerY = (box[0] + box[2]) / 2 * videoHeight;
+
+      place3DModel(centerX, centerY); // 根據偵測位置放置 3D 模型
+    }
+  }
+
+  requestAnimationFrame(detectObjects); // 持續進行偵測
+}
+
+// 初始化 TensorFlow Object Detection
+loadModel().then(() => {
+  detectObjects();
+});
+
+// 放置 3D 模型的函數
+function place3DModel(x, y) {
+  const gpsCamera = document.querySelector('[gps-camera]');
+  if (!gpsCamera) return;
+
+  const scene = document.querySelector('a-scene');
+  const newEntity = document.createElement('a-entity');
+  newEntity.setAttribute('gltf-model', '#Confetti');
+  newEntity.setAttribute('position', `${x} 0 ${y}`);
+  newEntity.setAttribute('scale', '1 1 1');
+  scene.appendChild(newEntity);
+
+  console.log(`3D model placed at: (${x}, ${y})`);
+}
+
 window.onload = function() {
   const coordinatesDiv = document.getElementById('coordinates');
   const cameraCoordinatesDiv = document.getElementById('camera-coordinates');
