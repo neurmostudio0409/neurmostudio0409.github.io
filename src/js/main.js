@@ -14,15 +14,17 @@ window.onload = function() {
   const model = document.querySelector('#model');
   const raycaster = document.querySelector('#raycaster');
 
-  // 當偵測到平面時，將模型放置在該平面上
   raycaster.addEventListener('raycaster-intersection', function (evt) {
     const intersection = evt.detail.intersections[0];
     if (intersection) {
       const point = intersection.point; // 偵測到的平面點位
       model.setAttribute('position', point); // 將模型放置到平面位置
       model.setAttribute('visible', true); // 顯示模型
+    } else {
+      model.setAttribute('visible', false); // 如果未偵測到平面，隱藏模型
     }
   });
+  
 
 
   // 建立高度控制按鈕
