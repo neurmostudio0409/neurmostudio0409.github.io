@@ -1,16 +1,3 @@
-const model = document.querySelector('#model');
-const raycaster = document.querySelector('#raycaster');
-
-// 當偵測到平面時，將模型放置在該平面上
-raycaster.addEventListener('raycaster-intersection', function (evt) {
-  const intersection = evt.detail.intersections[0];
-  if (intersection) {
-    const point = intersection.point; // 偵測到的平面點位
-    model.setAttribute('position', point); // 將模型放置到平面位置
-    model.setAttribute('visible', true); // 顯示模型
-  }
-});
-
 window.onload = function() {
   const coordinatesDiv = document.getElementById('coordinates');
   const cameraCoordinatesDiv = document.getElementById('camera-coordinates');
@@ -23,6 +10,20 @@ window.onload = function() {
   let initialCoordinates = null; // 存儲初始座標
   const gpsCamera = document.querySelector('[gps-camera]');
   const EARTH_RADIUS = 6371000; // 地球半徑（公尺）
+
+  const model = document.querySelector('#model');
+  const raycaster = document.querySelector('#raycaster');
+
+  // 當偵測到平面時，將模型放置在該平面上
+  raycaster.addEventListener('raycaster-intersection', function (evt) {
+    const intersection = evt.detail.intersections[0];
+    if (intersection) {
+      const point = intersection.point; // 偵測到的平面點位
+      model.setAttribute('position', point); // 將模型放置到平面位置
+      model.setAttribute('visible', true); // 顯示模型
+    }
+  });
+
 
   // 建立高度控制按鈕
   const heightControls = document.createElement('div');
@@ -69,13 +70,14 @@ window.onload = function() {
 
   switchButton.addEventListener('click', (event) => {
     event.preventDefault(); // 阻止預設行為
-    // 根據當前索引切換位置
+  // 根據當前索引切換位置
     const { latitude, longitude } = locations[currentLocationIndex];
     gpsCamera.setAttribute('gps-camera', `simulateLatitude: ${latitude}; simulateLongitude: ${longitude}`);
 
-    // 更新索引，並確保不會超過位置陣列的長度
+  // 更新索引，並確保不會超過位置陣列的長度
     currentLocationIndex = (currentLocationIndex + 1) % locations.length;
   });
+
 
   toggleButton.addEventListener('click', () => {
     minimized = !minimized;
@@ -120,12 +122,11 @@ window.onload = function() {
     }
   );
 
-  const smoothingFactor = 0.1; // 可以根據需要調整
   let smoothAccX = 0;
   let smoothAccY = 0;
   let smoothAccZ = 0;
 
-  const threshold = 0.05; // 根據需要調整閾值
+  const smoothingFactor = 0.1; // 可以根據需要調整
 
   window.addEventListener('devicemotion', function(event) {
     const accX = event.accelerationIncludingGravity.x;
@@ -137,13 +138,19 @@ window.onload = function() {
     smoothAccY = smoothAccY * (1 - smoothingFactor) + accY * smoothingFactor;
     smoothAccZ = smoothAccZ * (1 - smoothingFactor) + accZ * smoothingFactor;
 
+    // 更新相機位置的邏輯...
+  });
+
+  const threshold = 0.05; // 根據需要調整閾值
+
+  window.addEventListener('devicemotion', function(event) {
+    const accX = event.accelerationIncludingGravity.x;
+    const accY = event.accelerationIncludingGravity.y;
+    const accZ = event.accelerationIncludingGravity.z;
+
     // 檢查加速度是否超過閾值
-    if (Math.abs(smoothAccX) > threshold || Math.abs(smoothAccY) > threshold || Math.abs(smoothAccZ) > threshold) {
+    if (Math.abs(accX) > threshold || Math.abs(accY) > threshold || Math.abs(accZ) > threshold) {
       // 更新相機位置的邏輯...
-      // 可以根據平滑後的加速度來更新相機的位置
-      // gpsCamera.object3D.position.x += smoothAccX;
-      // gpsCamera.object3D.position.y += smoothAccY;
-      // gpsCamera.object3D.position.z += smoothAccZ;
     }
   });
 
