@@ -1,29 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8">
-    <title>AR Plane Detection with A-Frame</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Plane Detection Example</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
   </head>
-  <body style="margin: 0; overflow: hidden;">
-    <a-scene embedded arjs='sourceType: webcam; trackingMethod: best;'>
-      <a-entity id="raycaster" raycaster="objects: .placeable"></a-entity>
-      <a-camera position="0 1.6 0" look-controls></a-camera>
+  <body>
+    <a-scene embedded arjs='sourceType: webcam; detectionMode: mono;'>
+      <a-entity camera></a-entity>
 
       <!-- 可放置的物體 -->
-      <a-box class="placeable" position="0 0.5 -3" color="#4CC3D2"></a-box>
+      <a-box id="placeable-box" position="0 0.5 0" color="#4CC3D2" visible="false"></a-box>
 
-      <!-- 平面檢測 -->
-      <a-entity id="plane" position="0 0 0" rotation="-90 0 0" geometry="primitive: plane; width: 10; height: 10" material="color: #7BC8A4; opacity: 0.5;"></a-entity>
+      <!-- 用於平面檢測的平面 -->
+      <a-entity id="ground-plane" position="0 0 0" geometry="primitive: plane; width: 10; height: 10;" material="color: #7BC8A4; opacity: 0.5;"></a-entity>
+
+      <a-entity id="marker" position="0 0 0" rotation="-90 0 0" visible="false"></a-entity>
     </a-scene>
-    
+
     <script>
-      const raycaster = document.querySelector('#raycaster');
-      raycaster.addEventListener('raycaster-intersection', function (evt) {
-        console.log('Intersection detected:', evt.detail.intersections);
-        // 在這裡可以添加你的交互邏輯，例如放置物體
-      });
+      const placeableBox = document.querySelector('#placeable-box');
+      const groundPlane = document.querySelector('#ground-plane');
+
+      const onARReady = () => {
+        placeableBox.setAttribute('visible', true); // 顯示可放置的物體
+      };
+
+      const onPlaneDetected = (event) => {
+        const intersection = event.detail.intersections[0];
+        if (intersection) {
+          const position = intersection.point;
+          placeableBox.setAttribute('position', `${position.x} ${position.y + 0.5} ${position.z}`);
+        }
+      };
+
+      document.querySelector('a-scene').addEventListener('arjs-nonmarker-found', onARReady);
+      document.querySelector('a-scene').addEventListener('arjs-nonmarker-intersection', onPlaneDetected);
     </script>
   </body>
 </html>
