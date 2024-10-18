@@ -30,38 +30,39 @@
         <a-asset-item id="Weapon" src="assets/models/glb/Weapon_only.glb"></a-asset-item>
         <a-asset-item id="Animals" src="assets/models/glb/Animals_only.glb"></a-asset-item>
       </a-assets>
-        <!-- 使用 raycaster 來偵測平面 -->
         <a-entity 
-        id="raycaster"
-        raycaster="objects: .placeable; autoRefresh: true; interval: 100"
-        position="0 0 -1">
-      </a-entity>
-
-      <!-- 模型配置，會依偵測到的平面調整位置 -->
-      <a-entity 
-        id="model" 
-        gltf-model="#Confetti" 
-        scale="1 1 1" 
-        visible="false" 
-        class="placeable">
-      </a-entity>
-
-      <a-entity 
-        id="Weapon_Model"
-        gltf-model="#Weapon" 
-        scale="1 1 1" 
-        visible="false" 
-        class="placeable">
-      </a-entity>
-
-      <a-entity 
-        id="Animals_Model"
-        gltf-model="#Animals" 
-        scale="1 1 1" 
-        visible="false" 
-        class="placeable">
-      </a-entity>
-
-    </a-scene>
+          id="raycaster"
+          raycaster="objects: .placeable; autoRefresh: true; interval: 100"
+          position="0 0 -1">
+        </a-entity>
+        <a-entity 
+          id="model" 
+          gltf-model="#Confetti" 
+          scale="1 1 1" 
+          visible="true" 
+          class="placeable">
+        </a-entity>
+        <a-entity 
+          position="0 0 0"
+          animation-mixer="loop: repeat" 
+          gltf-model="#Confetti" 
+          scale="1 1 1"
+          gps-entity-place="latitude: 22.572110149552514; longitude: 120.3253901992984;">
+        </a-entity>
+        <a-entity 
+          position="0 0 0"
+          animation-mixer="loop: repeat" 
+          gltf-model="#Weapon" 
+          scale="1 1 1"
+          gps-entity-place="latitude: 22.738301; longitude: 120.316253;">
+        </a-entity>
+        <a-entity 
+          position="0 0 0"
+          animation-mixer="loop: repeat" 
+          gltf-model="#Animals" 
+          scale="1 1 1"
+          gps-entity-place="latitude: 22.838301; longitude: 120.416253;">
+        </a-entity>
+      </a-scene>
   </body>
 </html>
