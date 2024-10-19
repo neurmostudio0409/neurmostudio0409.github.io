@@ -56,13 +56,38 @@ window.onload = function() {
 
   switchButton.addEventListener('click', (event) => {
     event.preventDefault(); // 阻止預設行為
-  // 根據當前索引切換位置
-    const { latitude, longitude } = locations[currentLocationIndex];
-    gpsCamera.setAttribute('gps-camera', `simulateLatitude: ${latitude}; simulateLongitude: ${longitude}`);
-
-  // 更新索引，並確保不會超過位置陣列的長度
-    currentLocationIndex = (currentLocationIndex + 1) % locations.length;
+    // 隱藏UI
+    document.getElementById('coordinates').style.display = 'none';
+    document.getElementById('camera-coordinates').style.display = 'none';
+    document.getElementById('height-controls').style.display = 'none';
+    toggleButton.style.display = 'none';
+    
+    // 觸發遮罩漸變效果
+    const fadeOverlay = document.getElementById('fade-overlay');
+    fadeOverlay.style.opacity = 1; // 遮罩漸入（變黑）
+  
+    // 設置 1 秒的延遲來等待黑屏效果完成
+    setTimeout(() => {
+      // 切換 GPS 模擬位置
+      const { latitude, longitude } = locations[currentLocationIndex];
+      gpsCamera.setAttribute('gps-camera', `simulateLatitude: ${latitude}; simulateLongitude: ${longitude}`);
+  
+      // 更新索引，並確保不會超過位置陣列的長度
+      currentLocationIndex = (currentLocationIndex + 1) % locations.length;
+  
+      // 畫面恢復顯示
+      fadeOverlay.style.opacity = 0; // 遮罩漸出（淡出黑屏）
+  
+      // 恢復UI顯示
+      setTimeout(() => {
+        document.getElementById('coordinates').style.display = 'block';
+        document.getElementById('camera-coordinates').style.display = 'block';
+        document.getElementById('height-controls').style.display = 'flex';
+        toggleButton.style.display = 'block';
+      }, 1000); // 遮罩完全淡出後顯示UI
+    }, 1000); // 1 秒的延遲（與遮罩效果一致）
   });
+  
 
 
   toggleButton.addEventListener('click', () => {
