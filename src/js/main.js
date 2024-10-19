@@ -87,8 +87,6 @@ window.onload = function() {
       }, 1000); // 遮罩完全淡出後顯示UI
     }, 1000); // 1 秒的延遲（與遮罩效果一致）
   });
-  
-
 
   toggleButton.addEventListener('click', () => {
     minimized = !minimized;
