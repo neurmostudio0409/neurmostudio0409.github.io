@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AR Plane Detection with WebXR</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
     <script>
         // WebXR AR session initialization
         AFRAME.registerComponent('ar-plane-detection', {
@@ -53,7 +54,7 @@
     </style>
 </head>
 <body>
-    <a-scene embedded ar-plane-detection>
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;" ar-plane-detection>
         <a-entity camera></a-entity>
 
         <!-- 顯示的模型 -->
